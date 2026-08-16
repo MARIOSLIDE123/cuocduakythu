@@ -1,0 +1,6 @@
+{
+  "name": "Cuộc Đua Kỳ Thú - Game Giáo Dục Trường Đua Lớp Học",
+  "description": "Web app game đua ngựa giáo dục tương tác chuyên nghiệp dành cho giáo viên trình chiếu trên TV/máy chiếu lớp học, hỗ trợ nhập Excel học sinh & câu hỏi, mô phỏng đua ngựa kịch tính và trả lời câu hỏi trắc nghiệm.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

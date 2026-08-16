@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', 'Nunito', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom Horse Racing Animations */
+@keyframes gallop-body {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-4px) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(1px) rotate(1deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-0.5deg);
+  }
+}
+
+@keyframes gallop-front-leg {
+  0%, 100% {
+    transform: rotate(18deg);
+  }
+  50% {
+    transform: rotate(-22deg);
+  }
+}
+
+@keyframes gallop-back-leg {
+  0%, 100% {
+    transform: rotate(-25deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+}
+
+@keyframes dust-puff {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.6) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) translateX(-20px);
+  }
+}
+
+@keyframes flag-wave {
+  0%, 100% {
+    transform: skewY(0deg);
+  }
+  50% {
+    transform: skewY(6deg);
+  }
+}
+
+@keyframes float-cloud {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes winner-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-12px) scale(1.05);
+  }
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), 0 0 40px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(245, 158, 11, 0.8), 0 0 70px rgba(245, 158, 11, 0.4);
+  }
+}
+
+.animate-gallop {
+  animation: gallop-body 0.35s infinite ease-in-out;
+}
+
+.animate-front-leg {
+  transform-origin: 35px 28px;
+  animation: gallop-front-leg 0.35s infinite ease-in-out;
+}
+
+.animate-back-leg {
+  transform-origin: 12px 28px;
+  animation: gallop-back-leg 0.35s infinite ease-in-out;
+}
+
+.animate-flag {
+  animation: flag-wave 1.2s infinite ease-in-out;
+}
+
+.animate-winner {
+  animation: winner-bounce 1s infinite ease-in-out;
+}
+
+.glow-gold {
+  animation: pulse-gold 2s infinite ease-in-out;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.8);
+}
