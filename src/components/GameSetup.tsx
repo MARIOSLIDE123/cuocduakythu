@@ -209,7 +209,7 @@ export const GameSetup: React.FC<GameSetupProps> = ({
               <Clock className="w-3.5 h-3.5 text-amber-400" />
               <span>Thời gian suy nghĩ trả lời:</span>
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {thinkingTimeOptions.map((t) => (
                 <button
                   key={t.value}
@@ -224,6 +224,25 @@ export const GameSetup: React.FC<GameSetupProps> = ({
                   {t.label}
                 </button>
               ))}
+
+              {/* Custom Input */}
+              <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5">
+                <input
+                  type="number"
+                  min="1"
+                  max="300"
+                  value={formData.thinkingTime > 0 ? formData.thinkingTime : ''}
+                  placeholder="Tùy chỉnh"
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value, 10);
+                    if (!isNaN(val) && val >= 0) {
+                      setFormData({ ...formData, thinkingTime: val });
+                    }
+                  }}
+                  className="w-16 bg-transparent text-amber-300 font-mono text-xs font-bold text-center focus:outline-none"
+                />
+                <span className="text-xs text-slate-400 font-bold">giây</span>
+              </div>
             </div>
           </div>
 
