@@ -47,26 +47,26 @@ export const WinnerModal: React.FC<WinnerModalProps> = ({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-2 border-amber-400 rounded-3xl p-6 sm:p-8 max-w-xl w-full text-center shadow-2xl relative overflow-hidden glow-gold animate-in zoom-in-95">
+    <div className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 select-none overflow-y-auto">
+      <div className="bg-gradient-to-b from-[#24170e] via-slate-900 to-slate-950 border-4 border-amber-400 rounded-3xl p-6 sm:p-8 max-w-xl w-full text-center shadow-2xl relative overflow-hidden glow-gold animate-in zoom-in-95 my-auto">
         {/* Decorative corner glows */}
-        <div className="absolute -top-16 -left-16 w-36 h-36 bg-amber-500/20 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-16 -right-16 w-36 h-36 bg-orange-500/20 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -top-16 -left-16 w-36 h-36 bg-amber-500/30 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-16 -right-16 w-36 h-36 bg-orange-500/30 rounded-full blur-2xl pointer-events-none" />
 
         {/* Round Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-black uppercase mb-3">
+        <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs sm:text-sm font-black uppercase mb-3">
           <Sparkles className="w-4 h-4 text-yellow-400" />
-          <span>KẾT QUẢ VÒNG ĐUA #{roundNumber} (10 GIÂY)</span>
+          <span>🏛️ KẾT QUẢ ĐẤU TRƯỜNG VÒNG #{roundNumber} (10 GIÂY)</span>
         </div>
 
         {/* Title: The winning horse */}
-        <h2 className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 mb-4 drop-shadow">
-          🏆 CHÚ NGỰA ĐÃ CÁN ĐÍCH ĐẦU TIÊN!
+        <h2 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-300 to-orange-400 mb-4 drop-shadow">
+          🏆 CHIẾN MÃ ĐÃ CÁN ĐÍCH ĐẦU TIÊN!
         </h2>
 
         {/* Horse Animation Badge */}
         <div className="relative my-4 flex flex-col items-center justify-center">
-          <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-amber-500/20 to-orange-500/30 border-2 border-amber-400/60 flex items-center justify-center shadow-inner relative">
+          <div className="w-36 h-36 rounded-full bg-gradient-to-tr from-amber-500/30 via-orange-500/20 to-yellow-500/30 border-4 border-amber-400/80 flex items-center justify-center shadow-2xl relative">
             <Horse
               number={winner.horseNumber}
               color={winner.horseColor}
@@ -76,7 +76,7 @@ export const WinnerModal: React.FC<WinnerModalProps> = ({
           </div>
 
           <div
-            className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-sm font-black text-white shadow-lg border border-white/20"
+            className="mt-3.5 inline-flex items-center gap-2 px-5 py-2 rounded-2xl text-base font-black text-white shadow-xl border-2 border-white/30"
             style={{ backgroundColor: winner.horseColor }}
           >
             <span>🐎 NGỰA SỐ {String(winner.horseNumber).padStart(2, '0')}</span>
@@ -84,25 +84,25 @@ export const WinnerModal: React.FC<WinnerModalProps> = ({
         </div>
 
         {/* Grand Student Reveal Box */}
-        <div className="my-5 p-5 rounded-2xl bg-gradient-to-r from-indigo-950/80 via-slate-900 to-indigo-950/80 border-2 border-indigo-500/60 shadow-xl relative overflow-hidden">
-          <div className="text-[11px] font-extrabold text-amber-400 uppercase tracking-widest flex items-center justify-center gap-1.5 mb-1.5">
-            <Star className="w-3.5 h-3.5 fill-amber-400" />
+        <div className="my-5 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-[#2c1d12]/90 via-slate-900 to-[#2c1d12]/90 border-2 border-amber-500/60 shadow-2xl relative overflow-hidden">
+          <div className="text-xs font-black text-amber-400 uppercase tracking-widest flex items-center justify-center gap-2 mb-2">
+            <Star className="w-4 h-4 fill-amber-400" />
             <span>XIN CHÚC MỪNG HỌC SINH ĐẠI DIỆN</span>
-            <Star className="w-3.5 h-3.5 fill-amber-400" />
+            <Star className="w-4 h-4 fill-amber-400" />
           </div>
 
-          <h3 className="text-2xl sm:text-3xl font-black text-white drop-shadow mb-1 animate-in slide-in-from-bottom">
+          <h3 className="text-3xl sm:text-4xl font-black text-white drop-shadow-md mb-1.5 animate-in slide-in-from-bottom">
             {winner.name}
           </h3>
 
           {winner.className && (
-            <p className="text-sm font-extrabold text-blue-300">
+            <p className="text-base font-extrabold text-amber-300">
               Lớp: {winner.className}
             </p>
           )}
 
-          <p className="text-xs text-slate-300 mt-2 font-medium">
-            “Chú ngựa số <strong className="text-amber-300">{winner.horseNumber}</strong> của bạn đã xuất sắc bứt phá về đích sau 10 giây tranh tài!”
+          <p className="text-xs sm:text-sm text-slate-200 mt-2 font-medium">
+            “Chiến mã số <strong className="text-amber-300 text-sm">{winner.horseNumber}</strong> của bạn đã xuất sắc bứt phá về đích sau 10 giây tranh tài tại Đấu trường!”
           </p>
         </div>
 
@@ -112,11 +112,11 @@ export const WinnerModal: React.FC<WinnerModalProps> = ({
             sound.playClick();
             onProceedToQuestion();
           }}
-          className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 hover:from-amber-300 hover:to-red-400 text-slate-950 font-black text-base sm:text-lg flex items-center justify-center gap-3 shadow-xl shadow-orange-500/30 cursor-pointer transform hover:scale-105 active:scale-100 transition-all glow-gold"
+          className="w-full py-4 sm:py-4.5 px-6 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 hover:from-amber-300 hover:to-red-400 text-slate-950 font-black text-base sm:text-xl flex items-center justify-center gap-3 shadow-2xl shadow-orange-500/40 cursor-pointer transform hover:scale-105 active:scale-100 transition-all glow-gold border border-yellow-200"
         >
-          <Award className="w-5 h-5 fill-current" />
+          <Award className="w-6 h-6 fill-current" />
           <span>🎯 TRẢ LỜI CÂU HỎI ĐỂ GHI ĐIỂM</span>
-          <ArrowRight className="w-5 h-5" />
+          <ArrowRight className="w-6 h-6" />
         </button>
       </div>
     </div>
