@@ -113,6 +113,42 @@
   animation: pulse-gold 2s infinite ease-in-out;
 }
 
+@keyframes torch-flicker {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 8px #f59e0b);
+  }
+  25% {
+    transform: scale(1.1) translateY(-2px) rotate(2deg);
+    filter: drop-shadow(0 0 14px #ef4444);
+  }
+  50% {
+    transform: scale(0.95) translateY(1px) rotate(-1deg);
+    filter: drop-shadow(0 0 10px #f59e0b);
+  }
+  75% {
+    transform: scale(1.08) translateY(-1px) rotate(1deg);
+    filter: drop-shadow(0 0 16px #f97316);
+  }
+}
+
+.animate-torch {
+  animation: torch-flicker 0.8s infinite ease-in-out;
+}
+
+/* Greek Meander Key Pattern CSS */
+.greek-border-pattern {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #d97706 0px,
+    #d97706 6px,
+    transparent 6px,
+    transparent 12px,
+    #d97706 12px,
+    #d97706 18px
+  );
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
