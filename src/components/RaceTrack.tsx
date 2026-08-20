@@ -62,7 +62,7 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
   const [countdownNum, setCountdownNum] = useState<number | string | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [raceElapsedSec, setRaceElapsedSec] = useState<number>(0);
-  const [commentary, setCommentary] = useState<string>('Sẵn sàng xuất phát cuộc đua 10 giây!');
+  const [commentary, setCommentary] = useState<string>('🏛️ Sẵn sàng xuất phát cuộc đua Đấu Trường Olympia 10 giây!');
   const [isPhotoFinish, setIsPhotoFinish] = useState(false);
   const [showRosterOverlay, setShowRosterOverlay] = useState(false);
   const [isMuted, setIsMuted] = useState(!settings.soundEnabled);
@@ -73,13 +73,13 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
   const raceStartTimeRef = useRef<number | null>(null);
   const pausedTimeRef = useRef<number>(0);
 
-  // Initialize or reset horse positions in an open-field flock/pack layout (like the duck race reference image)
+  // Initialize or reset horse positions in an open-field flock/pack layout
   const resetTrack = () => {
     winnerDeterminedRef.current = false;
     setRaceElapsedSec(0);
     setIsPaused(false);
     setIsPhotoFinish(false);
-    setCommentary('Nhấn BẮT ĐẦU ĐUA (hoặc biểu tượng Chạy) để mở cổng xuất phát!');
+    setCommentary('🏛️ Nhấn BẮT ĐẦU ĐUA để mở cổng xuất phát Đấu trường Olympia!');
 
     const count = students.length;
     // Calculate organic positions for all horses in a clustered pack on the left side
@@ -263,23 +263,23 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
       // Update live race commentary (by Horse Number only)
       if (!winnerDeterminedRef.current) {
         if (elapsedSeconds < 2.5) {
-          setCommentary('🏇 CỔNG XUẤT PHÁT MỞ! Đàn ngựa đồng loạt phi nước đại ra đường đua!');
+          setCommentary('🏛️ CỔNG ĐẤU TRƯỜNG MỞ! Các chiến mã Hy Lạp đồng loạt phi nước đại!');
         } else if (elapsedSeconds < 5.0) {
           const leader = sortedHorses[0];
           const st = students.find((s) => s.id === leader?.studentId);
           setCommentary(
-            `⚡ Ngựa số ${String(st?.horseNumber || '??').padStart(2, '0')} đang tạm thời bứt phá dẫn trước!`
+            `⚡ Chiến mã số ${String(st?.horseNumber || '??').padStart(2, '0')} đang tạm thời bứt phá dẫn đầu đoàn đua!`
           );
         } else if (elapsedSeconds < 7.5) {
           const top2 = sortedHorses[1];
           const st2 = students.find((s) => s.id === top2?.studentId);
           setCommentary(
-            `🔥 TRANH ĐUA NGHẸT THỞ! Ngựa số ${String(st2?.horseNumber || '??').padStart(2, '0')} đang bám đuổi quyết liệt!`
+            `🔥 TRANH ĐUA NGHẸT THỞ! Chiến mã số ${String(st2?.horseNumber || '??').padStart(2, '0')} đang bám đuổi quyết liệt!`
           );
         } else if (elapsedSeconds < 9.0) {
-          setCommentary('🚩 ĐOẠN THẲNG NƯỚC RÚT 100M! Chuẩn bị chạm vạch đích ca-rô!');
+          setCommentary('🚩 ĐOẠN ĐƯỜNG NƯỚC RÚT! Tiến thẳng về Cổng Vinh Quang Khải Hoàn!');
         } else {
-          setCommentary('🏆 PHOTO-FINISH! Chú ngựa chiến thắng đã cán qua vạch đích!');
+          setCommentary('🏆 PHOTO-FINISH! Chiến mã vô địch đã cán qua vạch đích Đấu trường!');
         }
       }
 
@@ -310,7 +310,7 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
   const secondStudent = students.find((s) => s.id === secondHorse?.studentId);
   const thirdStudent = students.find((s) => s.id === thirdHorse?.studentId);
 
-  // Format digital stopwatch like Online-Stopwatch: "00:00:01" or "00:00:10"
+  // Format digital stopwatch: "00:00:01" or "00:00:10"
   const formattedSeconds = Math.floor(raceElapsedSec);
   const formattedCentis = Math.floor((raceElapsedSec % 1) * 100);
   const digitalStopwatchText = `00:00:${String(formattedSeconds).padStart(2, '0')}`;
@@ -321,21 +321,26 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
     sound.setEnabled(!next);
   };
 
+  // Only show horses on the active race track during preparation, countdown, and active racing
+  // When WINNER_REVEAL, QUESTION_ACTIVE, ANSWER_RESULT or finish modals are open, horses on track are completely hidden
+  const shouldRenderTrackHorses =
+    gamePhase === 'RACE_READY' || gamePhase === 'RACE_COUNTDOWN' || gamePhase === 'RACING';
+
   return (
-    <div className="relative w-full max-w-7xl mx-auto p-1 sm:p-3 flex flex-col gap-2.5">
-      {/* TOP HEADER CONTROLS & CENTER DIGITAL STOPWATCH (ONLINE-STOPWATCH STYLE) */}
-      <div className="bg-[#1b3d1f]/95 border-2 border-[#2e6833] rounded-2xl p-2.5 sm:p-3.5 shadow-2xl flex flex-wrap items-center justify-between gap-3 text-white">
+    <div className="relative w-full px-2 sm:px-4 py-2 flex flex-col gap-2.5 h-full select-none">
+      {/* TOP HEADER CONTROLS & CENTER DIGITAL STOPWATCH (ANCIENT ARENA STYLE) */}
+      <div className="bg-gradient-to-r from-[#2a1a0f]/95 via-[#382315]/95 to-[#2a1a0f]/95 border-2 border-amber-600/60 rounded-2xl p-2.5 sm:p-3 shadow-2xl flex flex-wrap items-center justify-between gap-3 text-white">
         {/* Top-Left Action Icons & Quick Buttons */}
         <div className="flex items-center gap-3">
           {/* Quick Icon Controls: Settings, Music, Bell */}
-          <div className="flex items-center gap-1.5 bg-black/40 p-1.5 rounded-xl border border-white/10">
+          <div className="flex items-center gap-1.5 bg-black/50 p-1.5 rounded-xl border border-amber-500/30">
             {/* Settings (Teacher Drawer) */}
             <button
               onClick={() => {
                 sound.playClick();
                 onOpenTeacherDrawer();
               }}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-yellow-300 transition-all cursor-pointer"
+              className="p-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 transition-all cursor-pointer border border-amber-400/30"
               title="Cài đặt giáo viên (⚙️)"
             >
               <Settings className="w-5 h-5" />
@@ -347,7 +352,7 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
                 toggleSound();
               }}
               className={`p-2 rounded-lg transition-all cursor-pointer ${
-                isMuted ? 'bg-red-500/20 text-red-400' : 'bg-white/10 hover:bg-white/20 text-emerald-300'
+                isMuted ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/30'
               }`}
               title={isMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
             >
@@ -359,8 +364,8 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
               onClick={() => {
                 sound.playStartBell();
               }}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-amber-300 transition-all cursor-pointer"
-              title="Rung chuông trường đua"
+              className="p-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-yellow-300 transition-all cursor-pointer border border-amber-400/30"
+              title="Rung chuông đấu trường"
             >
               <Bell className="w-5 h-5" />
             </button>
@@ -373,7 +378,7 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
                 onClick={() => setIsPaused(!isPaused)}
                 className="text-left text-amber-300 hover:text-white transition-colors cursor-pointer"
               >
-                {isPaused ? '▶ Tiếp Tục' : '⏸ Pause'}
+                {isPaused ? '▶ Tiếp Tục' : '⏸ Tạm Dừng'}
               </button>
             ) : gamePhase === 'RACE_READY' ? (
               <button
@@ -381,7 +386,7 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
                   sound.playClick();
                   onStartCountdown();
                 }}
-                className="text-left text-emerald-300 hover:text-white transition-colors font-black cursor-pointer"
+                className="text-left text-emerald-400 hover:text-white transition-colors font-black cursor-pointer text-sm"
               >
                 ▶ Bắt Đầu Đua
               </button>
@@ -392,34 +397,34 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
                 sound.playClick();
                 resetTrack();
               }}
-              className="text-left text-slate-300 hover:text-red-300 transition-colors cursor-pointer"
+              className="text-left text-amber-200/70 hover:text-red-300 transition-colors cursor-pointer"
             >
-              ↺ Clear / Reset
+              ↺ Đặt Lại Đấu Trường
             </button>
           </div>
         </div>
 
-        {/* Center: BIG DIGITAL STOPWATCH CLOCK CARD (00:00:01) */}
-        <div className="flex-1 flex justify-center min-w-[200px]">
-          <div className="bg-[#f0f4ff] px-6 sm:px-10 py-1.5 sm:py-2.5 rounded-2xl border-4 border-[#334155] shadow-2xl flex items-center justify-center">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-slate-950 tracking-wider">
+        {/* Center: BIG DIGITAL STOPWATCH CLOCK CARD (EXTRA LARGE FOR PROJECTOR) */}
+        <div className="flex-1 flex justify-center min-w-[240px]">
+          <div className="bg-gradient-to-b from-[#fffbeb] to-[#fef3c7] px-6 sm:px-12 py-1.5 sm:py-2 rounded-2xl border-4 border-amber-600 shadow-2xl flex items-center justify-center">
+            <span className="font-mono text-4xl sm:text-6xl md:text-7xl font-black text-amber-950 tracking-wider drop-shadow-sm">
               {digitalStopwatchText}
             </span>
-            <span className="font-mono text-base sm:text-xl font-bold text-slate-500 ml-2">
+            <span className="font-mono text-lg sm:text-2xl font-bold text-amber-700 ml-2">
               .{String(formattedCentis).padStart(2, '0')}
             </span>
           </div>
         </div>
 
         {/* Top-Right: Class & Round Badge + Teacher Roster Eye */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {/* Round & Class Info */}
           <div className="text-right hidden sm:block">
-            <div className="text-xs font-black text-amber-300 uppercase">
-              Vòng #{String(currentRound).padStart(2, '0')} / {totalRounds}
+            <div className="text-sm font-black text-amber-300 uppercase tracking-wide flex items-center justify-end gap-1">
+              <span>🏛️ VÒNG #{String(currentRound).padStart(2, '0')} / {totalRounds}</span>
             </div>
-            <div className="text-[11px] text-emerald-200 font-bold">
-              Lớp: {settings.className} ({students.length} Ngựa)
+            <div className="text-xs text-amber-100/90 font-extrabold">
+              {settings.className} ({students.length} Chiến Mã)
             </div>
           </div>
 
@@ -428,8 +433,8 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
             onClick={() => setShowRosterOverlay(!showRosterOverlay)}
             className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
               showRosterOverlay
-                ? 'bg-amber-500/30 text-amber-300 border-amber-400'
-                : 'bg-white/10 text-slate-300 border-white/20 hover:text-white'
+                ? 'bg-amber-500/40 text-amber-200 border-amber-400'
+                : 'bg-amber-950/60 text-amber-200 border-amber-500/40 hover:text-white'
             }`}
             title="Xem danh sách mã số ngựa & học sinh"
           >
@@ -443,9 +448,9 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
                 sound.playClick();
                 onStartCountdown();
               }}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 hover:from-amber-300 hover:to-red-400 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-1.5 shadow-xl shadow-orange-500/30 transition-all transform hover:scale-105 active:scale-95 cursor-pointer glow-gold"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 hover:from-amber-300 hover:to-red-500 text-slate-950 font-black text-sm sm:text-base flex items-center gap-2 shadow-xl shadow-orange-500/30 transition-all transform hover:scale-105 active:scale-95 cursor-pointer glow-gold border border-yellow-200"
             >
-              <Play className="w-4 h-4 fill-current" />
+              <Play className="w-5 h-5 fill-current" />
               <span>BẮT ĐẦU ĐUA (10S)</span>
             </button>
           )}
@@ -453,29 +458,33 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
       </div>
 
       {/* Live Commentary & Top Horse Contenders Bar */}
-      <div className="bg-slate-900/90 rounded-2xl p-2 sm:p-2.5 border border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs">
-        <div className="flex items-center gap-2 text-slate-200 font-bold flex-1 min-w-[260px]">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping shrink-0" />
-          <Radio className="w-4 h-4 text-amber-400 shrink-0" />
-          <span className="text-amber-300 font-black uppercase text-[11px] shrink-0">Bình luận:</span>
-          <span className="text-slate-100 truncate">{commentary}</span>
+      <div className="bg-gradient-to-r from-slate-900/95 via-[#251810]/95 to-slate-900/95 rounded-2xl p-2.5 sm:p-3 border border-amber-600/40 flex flex-wrap items-center justify-between gap-2.5 shadow-lg">
+        <div className="flex items-center gap-2.5 text-slate-100 font-bold flex-1 min-w-[280px]">
+          <span className="w-3 h-3 rounded-full bg-red-500 animate-ping shrink-0" />
+          <Radio className="w-5 h-5 text-amber-400 shrink-0" />
+          <span className="text-amber-400 font-black uppercase text-xs sm:text-sm shrink-0 tracking-wider">
+            Bình luận:
+          </span>
+          <span className="text-white text-sm sm:text-base md:text-lg font-extrabold truncate drop-shadow-sm">
+            {commentary}
+          </span>
         </div>
 
         {/* Live Top Leading Horses (Numbers only) */}
         {gamePhase === 'RACING' && leadingStudent && (
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-[11px] font-extrabold text-slate-400">DẪN ĐẦU:</span>
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 font-black">
+          <div className="flex items-center gap-2.5 shrink-0">
+            <span className="text-xs font-black text-amber-300/80 uppercase">DẪN ĐẦU:</span>
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-500/30 border-2 border-amber-400 text-amber-200 font-black text-sm shadow-md">
               <span>🥇 NGỰA #{String(leadingStudent.horseNumber).padStart(2, '0')}</span>
-              <span className="text-xs">🔥</span>
+              <span className="text-sm">🔥</span>
             </div>
             {secondStudent && (
-              <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-700/50 text-slate-300 font-bold text-[11px]">
+              <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-800/80 border border-slate-600 text-slate-200 font-bold text-xs">
                 <span>🥈 #{String(secondStudent.horseNumber).padStart(2, '0')}</span>
               </div>
             )}
             {thirdStudent && (
-              <div className="hidden md:flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-950/40 text-amber-600 font-bold text-[11px]">
+              <div className="hidden md:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#452814]/80 border border-amber-800 text-amber-400 font-bold text-xs">
                 <span>🥉 #{String(thirdStudent.horseNumber).padStart(2, '0')}</span>
               </div>
             )}
@@ -483,121 +492,151 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
         )}
       </div>
 
-      {/* OPEN-FIELD RACECOURSE ARENA (ONLINE-STOPWATCH DUCK/HORSE DERBY STYLE) */}
+      {/* ANCIENT GREEK HIPPODROME ARENA (FULL HORIZONTAL WIDTH) */}
       <div
         ref={trackContainerRef}
-        className="relative w-full h-[52vh] sm:h-[58vh] min-h-[380px] max-h-[640px] rounded-3xl border-4 border-[#2b5924] shadow-2xl overflow-hidden select-none bg-[#3b822d]"
+        className="relative w-full h-[60vh] sm:h-[68vh] min-h-[440px] max-h-[800px] rounded-3xl border-4 border-[#8c5626] shadow-2xl overflow-hidden select-none bg-[#c89255]"
       >
-        {/* 1. TOP GREEN BANK / HILL WITH BUSHES & TREES (AS IN SCREENSHOT) */}
-        <div className="absolute top-0 inset-x-0 h-16 sm:h-20 bg-gradient-to-b from-[#1b801b] via-[#249e24] to-[#1e7c1e] border-b-4 border-[#5a3818] z-0 flex items-center justify-between px-6 overflow-hidden">
-          {/* Decorative Bushes & Trees along the bank */}
-          <div className="flex items-center gap-6 sm:gap-10 text-2xl sm:text-3xl opacity-90 pointer-events-none">
-            <span className="drop-shadow">🌳</span>
-            <span className="drop-shadow hidden sm:inline">🌲</span>
-            <span className="drop-shadow">🌳</span>
-            <span className="drop-shadow">🌲</span>
-            <span className="drop-shadow hidden md:inline">🌳</span>
-            <span className="drop-shadow">🌳</span>
+        {/* 1. TOP ANCIENT GREEK COLONNADE & AMPHITHEATER SPECTATOR TIER */}
+        <div className="absolute top-0 inset-x-0 h-20 sm:h-24 bg-gradient-to-b from-[#2a1a10] via-[#3a2416] to-[#25170e] border-b-4 border-amber-700/80 z-0 flex items-center justify-between px-4 sm:px-8 relative overflow-hidden shadow-md">
+          {/* Classical Greek Doric/Ionic Columns & Olympic Torches on the Left */}
+          <div className="flex items-center gap-4 sm:gap-8 text-2xl sm:text-3xl opacity-95 pointer-events-none z-10">
+            <div className="flex items-center gap-1.5" title="Đuốc Olympic cổ đại">
+              <span className="text-3xl animate-torch drop-shadow">🔥</span>
+              <span className="text-2xl drop-shadow">🏛️</span>
+            </div>
+            <span className="drop-shadow hidden sm:inline text-2xl">🏛️</span>
+            <div className="flex items-center gap-1" title="Vòng nguyệt quế">
+              <span className="text-2xl drop-shadow">🌿</span>
+              <span className="text-2xl drop-shadow">🏛️</span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 text-white/80 font-black text-xs sm:text-sm tracking-wider z-10 drop-shadow">
-            <span>🏁 TRƯỜNG ĐUA NGỰA LỚP HỌC 10 GIÂY</span>
+          {/* Grand Greek Arena Title Banner */}
+          <div className="flex flex-col items-center justify-center text-center z-10 px-2 drop-shadow-lg">
+            <div className="flex items-center gap-2">
+              <span className="text-amber-400 text-base sm:text-xl">⚡</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-100 font-black text-sm sm:text-lg md:text-xl tracking-widest uppercase font-serif">
+                ĐẤU TRƯỜNG HY LẠP CỔ ĐẠI • OLYMPIA
+              </span>
+              <span className="text-amber-400 text-base sm:text-xl">⚡</span>
+            </div>
+            <span className="text-[10px] sm:text-xs font-black text-amber-400/90 tracking-widest uppercase">
+              🏛️ CUỘC TRANH TÀI 10 GIÂY CỦA CÁC CHIẾN MÃ 🏛️
+            </span>
           </div>
 
-          <div className="flex items-center gap-6 sm:gap-10 text-2xl sm:text-3xl opacity-90 pointer-events-none">
-            <span className="drop-shadow">🌲</span>
-            <span className="drop-shadow">🌳</span>
-            <span className="drop-shadow hidden sm:inline">🌲</span>
-            <span className="drop-shadow">🌳</span>
+          {/* Classical Greek Doric/Ionic Columns & Olympic Torches on the Right */}
+          <div className="flex items-center gap-4 sm:gap-8 text-2xl sm:text-3xl opacity-95 pointer-events-none z-10">
+            <div className="flex items-center gap-1" title="Vòng nguyệt quế">
+              <span className="text-2xl drop-shadow">🏛️</span>
+              <span className="text-2xl drop-shadow">🌿</span>
+            </div>
+            <span className="drop-shadow hidden sm:inline text-2xl">🏛️</span>
+            <div className="flex items-center gap-1.5" title="Đuốc Olympic cổ đại">
+              <span className="text-2xl drop-shadow">🏛️</span>
+              <span className="text-3xl animate-torch drop-shadow">🔥</span>
+            </div>
           </div>
 
-          {/* Wooden Fence Railing */}
-          <div className="absolute bottom-1 inset-x-0 h-2 bg-[#78461b] border-t border-b border-[#4d2b0e] opacity-80" />
+          {/* Greek Key / Meander Frieze Border */}
+          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 opacity-70" />
+
+          {/* Carved Marble Balustrade / Stone Railing */}
+          <div className="absolute bottom-0 inset-x-0 h-3.5 bg-gradient-to-b from-[#f3ece0] via-[#e5dcce] to-[#bda68c] border-t border-b border-[#7c5630] shadow-md flex items-center justify-around opacity-95">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <div key={i} className="w-1.5 h-full bg-[#8c6b45] opacity-50" />
+            ))}
+          </div>
         </div>
 
-        {/* 2. THE MAIN RACING TURF/RIVER FIELD (FROM LEFT TO RIGHT) */}
-        <div className="absolute top-16 sm:top-20 bottom-0 inset-x-0 bg-gradient-to-b from-[#327299] via-[#3d8cb8] to-[#2d688a] overflow-hidden">
-          {/* Subtle water wave / grass turf lines */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]" />
-          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[linear-gradient(to_right,#00000010_1px,transparent_1px)] [background-size:80px_100%]" />
+        {/* 2. THE MAIN RACING HIPPODROME SAND TRACK GROUND (FROM LEFT TO RIGHT) */}
+        <div className="absolute top-20 sm:top-24 bottom-0 inset-x-0 bg-gradient-to-b from-[#cb955a] via-[#dcab6f] to-[#b67e43] overflow-hidden">
+          {/* Ancient Sand Arena Texture & Chariot Track Ruts */}
+          <div className="absolute inset-0 opacity-25 pointer-events-none bg-[radial-gradient(#683e16_1px,transparent_1px)] [background-size:20px_20px]" />
+          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[linear-gradient(to_bottom,#4a2707_1px,transparent_1px)] [background-size:100%_40px]" />
+          
+          {/* Subtle Greek Sand Arena Dust Lines */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(to_right,#ffffff_2px,transparent_2px)] [background-size:120px_100%]" />
 
-          {/* 3. SLANTED / DIAGONAL CHECKERED FINISH LINE RIBBON (MATCHING REFERENCE IMAGE) */}
+          {/* 3. ANCIENT GREEK TRIUMPHAL FINISH LINE & MARBLE PILLARS (AT ~82% WIDTH) */}
           <div
-            className="absolute top-0 bottom-0 right-[15%] sm:right-[18%] w-10 sm:w-14 pointer-events-none z-10 shadow-2xl flex flex-col items-center justify-between py-2 transform -skew-x-12 border-x-4 border-[#0f172a]"
+            className="absolute top-0 bottom-0 right-[15%] sm:right-[18%] w-12 sm:w-16 pointer-events-none z-10 shadow-2xl flex flex-col items-center justify-between py-1 transform -skew-x-6 border-x-4 border-[#3d2411]"
             style={{
               backgroundImage:
-                'repeating-conic-gradient(#000000 0% 25%, #ffffff 0% 50%)',
-              backgroundSize: '20px 20px',
+                'repeating-conic-gradient(#1e130a 0% 25%, #ffffff 0% 50%)',
+              backgroundSize: '24px 24px',
             }}
           >
-            {/* Top Finish Badge */}
-            <div className="bg-red-600 text-white font-black text-[10px] sm:text-xs px-2 py-0.5 rounded shadow-lg border border-white transform skew-x-12 -mt-1">
-              ĐÍCH
+            {/* Top Finish Badge - Greek Victory Arch / Nikē */}
+            <div className="bg-gradient-to-r from-red-600 via-amber-600 to-red-600 text-white font-black text-xs sm:text-sm px-2.5 py-1 rounded-lg shadow-2xl border-2 border-yellow-300 transform skew-x-6 -mt-1 tracking-wider text-center">
+              <div className="text-[9px] text-yellow-200">🏛️ NIKĒ</div>
+              <span>ĐÍCH</span>
             </div>
 
-            {/* Bottom Finish Flag */}
-            <div className="bg-black text-amber-300 font-black text-[10px] sm:text-xs px-2 py-0.5 rounded shadow-lg border border-amber-400 transform skew-x-12 -mb-1">
-              FINISH
+            {/* Bottom Finish Flag - Ancient Greek Laurel & Victory */}
+            <div className="bg-slate-950 text-amber-300 font-black text-[10px] sm:text-xs px-2.5 py-1 rounded-lg shadow-2xl border-2 border-amber-400 transform skew-x-6 -mb-1 tracking-wider flex items-center gap-1">
+              <span>🏆 VICTORY</span>
             </div>
           </div>
 
-          {/* 4. RUNNING HORSES FLOCK (CLUSTERING ON LEFT, SPRINTING TO RIGHT, Y-DEPTH SORTED) */}
-          {horseStates.map((horse) => {
-            const student = students.find((s) => s.id === horse.studentId);
-            if (!student) return null;
+          {/* 4. RUNNING HORSES FLOCK - ONLY RENDERED DURING ACTIVE RACING & COUNTDOWN */}
+          {/* When modal (Winner, Question, Answer Result) is open, horses are completely hidden to avoid distraction */}
+          {shouldRenderTrackHorses &&
+            horseStates.map((horse) => {
+              const student = students.find((s) => s.id === horse.studentId);
+              if (!student) return null;
 
-            const isLeading = horse.studentId === leadingHorse?.studentId && horse.xProgress > 8;
-            const isSprinting = raceElapsedSec > 8.0 && isLeading;
-            const isWinner = horse.xProgress >= 100 || (isPhotoFinish && horse.studentId === leadingHorse?.studentId);
+              const isLeading = horse.studentId === leadingHorse?.studentId && horse.xProgress > 8;
+              const isSprinting = raceElapsedSec > 8.0 && isLeading;
+              const isWinner = horse.xProgress >= 100 || (isPhotoFinish && horse.studentId === leadingHorse?.studentId);
 
-            // Compute visual X position across field from Left (2%) to Finish Line (~80%)
-            // When progress is 0%, left is ~2% - 15% (flock cluster).
-            // When progress is 100%, left is ~82% (touching/passing finish line).
-            const leftPercent = Math.min(84, Math.max(1, (horse.xProgress / 100) * 80));
-            const topPercent = horse.baseYPercent + horse.currentYOffset;
+              // Compute visual X position across field from Left (2%) to Finish Line (~80%)
+              const leftPercent = Math.min(84, Math.max(1, (horse.xProgress / 100) * 80));
+              const topPercent = horse.baseYPercent + horse.currentYOffset;
 
-            // Depth Sorting (Y-Index): Horses with higher Y appear in front!
-            const zIndex = Math.round(topPercent * 10) + (isLeading ? 200 : 0);
+              // Depth Sorting (Y-Index): Horses with higher Y appear in front
+              const zIndex = Math.round(topPercent * 10) + (isLeading ? 200 : 0);
 
-            return (
-              <div
-                key={horse.studentId}
-                className="absolute transition-transform duration-75 ease-linear will-change-transform flex items-center"
-                style={{
-                  left: `${leftPercent}%`,
-                  top: `${topPercent}%`,
-                  zIndex,
-                }}
-              >
-                <div className="relative group cursor-pointer">
-                  {/* Galloping Race Horse */}
-                  <Horse
-                    number={student.horseNumber}
-                    color={student.horseColor}
-                    isRacing={gamePhase === 'RACING' && horse.xProgress < 100}
-                    isWinner={isWinner}
-                    isLeader={isLeading}
-                    isSprinting={isSprinting}
-                    size={students.length > 18 ? 'sm' : students.length > 8 ? 'md' : 'lg'}
-                  />
+              return (
+                <div
+                  key={horse.studentId}
+                  className="absolute transition-transform duration-75 ease-linear will-change-transform flex items-center"
+                  style={{
+                    left: `${leftPercent}%`,
+                    top: `${topPercent}%`,
+                    zIndex,
+                  }}
+                >
+                  <div className="relative group cursor-pointer">
+                    {/* Galloping Race Horse */}
+                    <Horse
+                      number={student.horseNumber}
+                      color={student.horseColor}
+                      isRacing={gamePhase === 'RACING' && horse.xProgress < 100}
+                      isWinner={isWinner}
+                      isLeader={isLeading}
+                      isSprinting={isSprinting}
+                      size={students.length > 24 ? 'sm' : students.length > 10 ? 'md' : 'lg'}
+                    />
 
-                  {/* Leading Flame Indicator */}
-                  {isLeading && gamePhase === 'RACING' && (
-                    <div className="absolute -top-3 -right-2 flex items-center gap-0.5 bg-amber-500 border border-amber-300 px-1 py-0.2 rounded-full shadow animate-bounce z-30">
-                      <Flame className="w-3 h-3 text-red-600 fill-red-600" />
-                      <span className="text-[9px] font-black text-slate-950">#1</span>
-                    </div>
-                  )}
+                    {/* Leading Flame Indicator */}
+                    {isLeading && gamePhase === 'RACING' && (
+                      <div className="absolute -top-3.5 -right-2 flex items-center gap-0.5 bg-gradient-to-r from-amber-400 to-orange-500 border border-amber-200 px-1.5 py-0.5 rounded-full shadow-lg animate-bounce z-30">
+                        <Flame className="w-3.5 h-3.5 text-red-600 fill-red-600" />
+                        <span className="text-[10px] font-black text-slate-950">#1</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
 
       {/* Optional Teacher Roster Peek Overlay */}
       {showRosterOverlay && (
-        <div className="p-4 bg-slate-900/95 border-2 border-amber-500/50 rounded-2xl shadow-2xl animate-in fade-in">
+        <div className="p-4 bg-slate-900/95 border-2 border-amber-500/50 rounded-2xl shadow-2xl animate-in fade-in z-20">
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
               <Users className="w-4 h-4" />
@@ -605,7 +644,7 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
             </h4>
             <button
               onClick={() => setShowRosterOverlay(false)}
-              className="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800"
+              className="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800 cursor-pointer"
             >
               ✕ Đóng
             </button>
@@ -634,15 +673,15 @@ export const RaceTrack: React.FC<RaceTrackProps> = ({
 
       {/* 3D Countdown Gate Overlay */}
       {countdownNum !== null && (
-        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center">
+        <div className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center">
           <div className="text-center animate-bounce">
             <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-gradient-to-tr from-amber-500 via-orange-500 to-red-600 border-4 border-amber-300 shadow-2xl flex items-center justify-center mx-auto mb-4 glow-gold">
               <span className="text-5xl sm:text-7xl font-black text-white drop-shadow-lg tracking-wider">
                 {countdownNum}
               </span>
             </div>
-            <p className="text-xl sm:text-2xl font-black text-amber-300 uppercase tracking-widest">
-              {countdownNum === 'XUẤT PHÁT!' ? '🔥 MỞ CỔNG ĐUA (10 GIÂY)!' : 'CHUẨN BỊ XUẤT PHÁT...'}
+            <p className="text-xl sm:text-2xl font-black text-amber-300 uppercase tracking-widest drop-shadow">
+              {countdownNum === 'XUẤT PHÁT!' ? '🔥 MỞ CỔNG ĐẤU TRƯỜNG (10 GIÂY)!' : '🏛️ CHUẨN BỊ XUẤT PHÁT...'}
             </p>
           </div>
         </div>
